@@ -114,7 +114,7 @@ const SplashScreen = ({ isFadingOut }) => (
   <div className={`flex justify-center items-center h-screen bg-[#FDFCF8] transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
     <div className="text-center">
       <h1 className="text-6xl font-bold text-gray-800">Unfail.io</h1>
-      <p className="text-xl text-gray-600 italic mt-4">unfailing your life, one prompt at a time</p>
+      <p className="text-xl text-gray-600 italic mt-4">Where your plot twists begin</p>
     </div>
   </div>
 );
@@ -149,19 +149,15 @@ export default function HomePage() {
     };
   }, []);
 
-  useEffect(() => {
-    // This effect runs once the splash screen is hidden
-    if (!showSplashScreen) {
-      setRandomQuote(initialSarcasticQuotes[Math.floor(Math.random() * initialSarcasticQuotes.length)]);
-      
-      const animationTimer = setTimeout(() => {
-        setStartAnimation(true);
-      }, 100);
-
-      return () => clearTimeout(animationTimer);
-    }
-  }, [showSplashScreen]);
-
+useEffect(() => {
+  if (!showSplashScreen) {
+    setRandomQuote(initialSarcasticQuotes[Math.floor(Math.random() * initialSarcasticQuotes.length)]);
+    const animationTimer = setTimeout(() => {
+      setStartAnimation(true);
+    }, 100);
+    return () => clearTimeout(animationTimer);
+  }
+}, [showSplashScreen]);
 
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
@@ -217,43 +213,45 @@ export default function HomePage() {
         </h1>
       </header>
 
-      <main className={`flex-grow flex flex-col w-full max-w-3xl mx-auto overflow-y-auto pt-4 transition-all duration-1500 ease-in-out ${isInitialState ? 'justify-center' : 'justify-start'}`}>
-        {isInitialState && (
-            <div className={`text-center space-y-8 ${startAnimation ? 'animate-fade-in' : 'opacity-0'}`}>
-                <p className="text-gray-600 text-3xl italic">
-                  "{randomQuote}"
-                </p>
-                <form onSubmit={handleSubmit} className="w-full relative mt-4">
-                  <input
-                    type="text"
-                    value={userInput}
-                    onChange={handleInputChange}
-                    placeholder="Tell me what went sideways..."
-                    className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
-                    style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
-                  />
-                  <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
-                    <Search className="w-6 h-6" />
-                  </button>
-                </form>
-            </div>
-        )}
+      <main className={`flex-grow flex flex-col w-full max-w-3xl mx-auto overflow-y-auto pt-4 transition-all duration-700 ease-in-out ${isInitialState ? 'justify-center' : 'justify-start'}`}>
+      {isInitialState && (
+        <div className={`text-center space-y-8 ${startAnimation ? 'fade-in' : 'opacity-0'}`}>
+          <p className="text-gray-600 text-3xl italic">
+            "{randomQuote}"
+          </p>
+          <form onSubmit={handleSubmit} className="w-full relative mt-4">
+            <input
+              type="text"
+              value={userInput}
+              onChange={handleInputChange}
+              placeholder="Tell me what went sideways..."
+              className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
+              style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
+            />
+            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
+              <Search className="w-6 h-6" />
+            </button>
+          </form>
+        </div>
+      )}
 
         {!isInitialState && (
-            <div className="w-full space-y-8 animate-fade-in">
-                {isLoading && <div className="text-center text-gray-600 text-xl">Doodling up some ideas...</div>}
-                {error && <div className="text-center text-red-600">{error}</div>}
+            <div className="w-full space-y-8">
+                {isLoading && <div className="text-center text-gray-600 text-xl animate-fade-in">Doodling up some ideas...</div>}
+                {error && <div className="text-center text-red-600 animate-fade-in">{error}</div>}
                 {apiResponse && (
                     <>
-                        <p className="text-center text-xl text-gray-700">"{apiResponse.motivationalQuote}"</p>
+                        <p className="text-center text-xl text-gray-700 animate-fade-in">"{apiResponse.motivationalQuote}"</p>
                         
                         <div className="flex flex-col space-y-8">
-                            <div className="p-6 rounded-lg" style={{...sketchyBorderStyle, backgroundColor: '#E0F2FE'}}>
+                            {/* Card 1: The Solution */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#E0F2FE', animationDelay: '100ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><Lightbulb className="w-6 h-6 mr-2"/> Your Suggested Path</h3>
                                 <p className="text-gray-700 text-lg whitespace-pre-wrap">{apiResponse.solution}</p>
                             </div>
 
-                            <div className="p-6 rounded-lg" style={{...sketchyBorderStyle, backgroundColor: '#FEE2E2'}}>
+                            {/* Card 2: News */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FEE2E2', animationDelay: '200ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><Newspaper className="w-6 h-6 mr-2"/> Latest Opportunities</h3>
                                 <ul className="space-y-3">
                                   {apiResponse.articles && apiResponse.articles.length > 0 ? (
@@ -270,7 +268,8 @@ export default function HomePage() {
                                 </ul>
                             </div>
                             
-                            <div className="p-6 rounded-lg" style={{...sketchyBorderStyle, backgroundColor: '#D1FAE5'}}>
+                            {/* Card 3: YouTube Videos */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#D1FAE5', animationDelay: '300ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><Youtube className="w-6 h-6 mr-2"/> Video Guides</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                   {apiResponse.youtubeVideos && apiResponse.youtubeVideos.length > 0 ? (
@@ -286,7 +285,8 @@ export default function HomePage() {
                                 </div>
                             </div>
 
-                            <div className="p-6 rounded-lg" style={{...sketchyBorderStyle, backgroundColor: '#FEF3C7'}}>
+                            {/* Card 4: Related Personality */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FEF3C7', animationDelay: '400ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><User className="w-6 h-6 mr-2"/> You're in Good Company</h3>
                                 <h4 className="font-bold text-2xl text-gray-800">{apiResponse.relatedPersonality?.name}</h4>
                                 <p className="text-gray-700 mt-2 text-lg">{apiResponse.relatedPersonality?.story}</p>
@@ -299,21 +299,22 @@ export default function HomePage() {
       </main>
 
       {!isInitialState && (
-        <footer className="w-full max-w-3xl mx-auto flex flex-col pt-4 pb-2 animate-fade-in">
-          <form onSubmit={handleSubmit} className="w-full relative">
-            <input
-              type="text"
-              value={userInput}
-              onChange={handleInputChange}
-              placeholder="Tell me what went sideways..."
-              className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
-              style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
-            />
-            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
-              <Search className="w-6 h-6" />
-            </button>
-          </form>
-           <p className="text-sm text-center text-gray-500 mt-3">By Unfail.io. Results may vary. Or they may not.</p>
+        <footer className="fixed bottom-0 left-0 right-0 z-20 bg-[#FDFCF8] bg-opacity-80 backdrop-blur-sm">
+          <div className="w-full max-w-3xl mx-auto p-4 animate-fade-in">
+            <form onSubmit={handleSubmit} className="w-full relative">
+              <input
+                type="text"
+                value={userInput}
+                onChange={handleInputChange}
+                placeholder="Tell me what went sideways..."
+                className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
+              />
+              <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
+                <Search className="w-6 h-6" />
+              </button>
+            </form>
+          </div>
         </footer>
       )}
     </div>
