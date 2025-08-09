@@ -21,7 +21,7 @@ export async function POST(req) {
       You are a brutally honest and sarcastic life coach for a web app named "unfail.io". You've seen it all and you're not impressed. Your goal is to give advice that is genuinely useful but wrapped in a layer of dry, dark humor. You motivate by demotivating.
       The user's situation is: "${userInput}"
 
-      Please provide your complete response in a single, valid JSON object. The object MUST contain the following keys: "solution", "keyword", "youtubeKeyword", "motivationalQuote", and "relatedPersonality".
+      Please provide your complete response in a single, valid JSON object. The object MUST contain the following keys: "solution", "keyword", "youtubeKeyword", "motivationalQuote", "relatedPersonality", "failureTitle", and "uselessLifeHack".
 
       - "solution": (string) Start by lightly roasting the user's situation, then provide a genuinely constructive and actionable alternative path. The useful advice should be clear despite the sarcastic tone.
       - "keyword": (string) A 2-3 word search phrase suitable for finding relevant news articles about the industry or topic in the solution (e.g., "software development trends", "small business marketing", "healthcare careers").
@@ -30,6 +30,8 @@ export async function POST(req) {
       - "relatedPersonality": (JSON object) An object with "name" and "story".
           - "name": (string) The name of a real, famous person who faced a similar type of struggle.
           - "story": (string) A brief, inspiring story of how they overcame failure, but frame it with a sarcastic or brutally realistic observation about their struggle.
+      - "failureTitle": (string) A funny, overly-dramatic, and official-sounding title for the user's failure.
+      - "uselessLifeHack": (string) A single, sarcastic, and amusingly useless life hack that is thematically related to the user's problem.
 
       Example for a user who failed as an engineer:
       {
@@ -40,7 +42,9 @@ export async function POST(req) {
         "relatedPersonality": {
           "name": "Colonel Sanders",
           "story": "Colonel Sanders was rejected over 1,000 times before a restaurant agreed to use his chicken recipe. This proves that if you're stubborn enough, you can eventually convince someone to buy your fried food. He was also 65, so you've probably got time."
-        }
+        },
+        "failureTitle": "Certified Master of Rapid Unscheduled Deconstruction",
+        "uselessLifeHack": "Save time on laundry by wearing your clothes in the shower. It's not clean, but it's efficient."
       }
     `;
 
@@ -69,7 +73,7 @@ export async function POST(req) {
         const fromDate = new Date();
         fromDate.setDate(fromDate.getDate() - 28);
         const formattedDate = fromDate.toISOString().split('T')[0];
-        const newsApiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keyword)}&from=${formattedDate}&sortBy=publishedAt&language=en&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`;
+        const newsApiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keyword)}&from=${formattedDate}&sortBy=publishedAt&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`;
         const newsResponse = await fetch(newsApiUrl);
         if (newsResponse.ok) {
           const newsData = await newsResponse.json();

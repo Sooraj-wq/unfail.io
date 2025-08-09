@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { User, Newspaper, Lightbulb, Youtube, Search } from 'lucide-react';
+import { User, Newspaper, Lightbulb, Youtube, Search, Award, Wand2 } from 'lucide-react';
 
 const initialSarcasticQuotes = [
   "The first step to failure is trying.",
@@ -19,7 +19,6 @@ const initialSarcasticQuotes = [
   "I'm not saying it was your fault, I'm just saying I'm blaming you."
 ];
 
-// DoodleBackground.jsx
 const HUD_COLOR = "#c6c1b9"; // slightly darker than background
 
 const DoodleBackground = () => (
@@ -108,7 +107,6 @@ const DoodleBackground = () => (
   </div>
 );
 
-
 // Splash Screen Component
 const SplashScreen = ({ isFadingOut }) => (
   <div className={`flex justify-center items-center h-screen bg-[#FDFCF8] transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
@@ -149,15 +147,19 @@ export default function HomePage() {
     };
   }, []);
 
-useEffect(() => {
-  if (!showSplashScreen) {
-    setRandomQuote(initialSarcasticQuotes[Math.floor(Math.random() * initialSarcasticQuotes.length)]);
-    const animationTimer = setTimeout(() => {
-      setStartAnimation(true);
-    }, 100);
-    return () => clearTimeout(animationTimer);
-  }
-}, [showSplashScreen]);
+  useEffect(() => {
+    // This effect runs once the splash screen is hidden
+    if (!showSplashScreen) {
+      setRandomQuote(initialSarcasticQuotes[Math.floor(Math.random() * initialSarcasticQuotes.length)]);
+      
+      const animationTimer = setTimeout(() => {
+        setStartAnimation(true);
+      }, 100);
+
+      return () => clearTimeout(animationTimer);
+    }
+  }, [showSplashScreen]);
+
 
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
@@ -207,33 +209,33 @@ useEffect(() => {
   return (
     <div className="relative flex flex-col min-h-screen p-4 md:p-6 bg-[#FDFCF8] text-gray-800 overflow-hidden">
       <DoodleBackground />
-      <header className="w-full max-w-5xl mx-auto">
+      <header className="w-full max-w-5xl mx-auto z-10">
         <h1 className="text-4xl font-bold text-gray-800">
             Unfail.io
         </h1>
       </header>
 
-      <main className={`flex-grow flex flex-col w-full max-w-3xl mx-auto overflow-y-auto pt-4 transition-all duration-700 ease-in-out ${isInitialState ? 'justify-center' : 'justify-start'}`}>
-      {isInitialState && (
-        <div className={`text-center space-y-8 ${startAnimation ? 'fade-in' : 'opacity-0'}`}>
-          <p className="text-gray-600 text-3xl italic">
-            "{randomQuote}"
-          </p>
-          <form onSubmit={handleSubmit} className="w-full relative mt-4">
-            <input
-              type="text"
-              value={userInput}
-              onChange={handleInputChange}
-              placeholder="Tell me what went sideways..."
-              className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
-              style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
-            />
-            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
-              <Search className="w-6 h-6" />
-            </button>
-          </form>
-        </div>
-      )}
+      <main className={`flex-grow flex flex-col w-full max-w-3xl mx-auto overflow-y-auto pt-4 transition-all duration-700 ease-in-out ${isInitialState ? 'justify-center' : 'justify-start'} ${!isInitialState ? 'pb-32' : ''}`}>
+        {isInitialState && (
+            <div className={`text-center space-y-8 ${startAnimation ? 'animate-fade-in' : 'opacity-0'}`}>
+                <p className="text-gray-600 text-3xl italic">
+                  "{randomQuote}"
+                </p>
+                <form onSubmit={handleSubmit} className="w-full relative mt-4">
+                  <input
+                    type="text"
+                    value={userInput}
+                    onChange={handleInputChange}
+                    placeholder="Tell me what went sideways..."
+                    className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
+                  />
+                  <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
+                    <Search className="w-6 h-6" />
+                  </button>
+                </form>
+            </div>
+        )}
 
         {!isInitialState && (
             <div className="w-full space-y-8">
@@ -241,17 +243,23 @@ useEffect(() => {
                 {error && <div className="text-center text-red-600 animate-fade-in">{error}</div>}
                 {apiResponse && (
                     <>
-                        <p className="text-center text-xl text-gray-700 animate-fade-in">"{apiResponse.motivationalQuote}"</p>
+                        <p className="text-center text-2xl italic text-gray-700 animate-fade-in">"{apiResponse.motivationalQuote}"</p>
                         
                         <div className="flex flex-col space-y-8">
-                            {/* Card 1: The Solution */}
-                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#E0F2FE', animationDelay: '100ms'}}>
+                            {/* Card 1: Official Title */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#F3E8FF', animationDelay: '100ms'}}>
+                                <h3 className="font-bold text-2xl mb-3 flex items-center"><Award className="w-6 h-6 mr-2"/> Your Official Title</h3>
+                                <p className="text-gray-700 text-xl italic">{apiResponse.failureTitle}</p>
+                            </div>
+
+                            {/* Card 2: The Solution */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#E0F2FE', animationDelay: '200ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><Lightbulb className="w-6 h-6 mr-2"/> Your Suggested Path</h3>
                                 <p className="text-gray-700 text-lg whitespace-pre-wrap">{apiResponse.solution}</p>
                             </div>
 
-                            {/* Card 2: News */}
-                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FEE2E2', animationDelay: '200ms'}}>
+                            {/* Card 3: News */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FEE2E2', animationDelay: '300ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><Newspaper className="w-6 h-6 mr-2"/> Latest Opportunities</h3>
                                 <ul className="space-y-3">
                                   {apiResponse.articles && apiResponse.articles.length > 0 ? (
@@ -268,8 +276,8 @@ useEffect(() => {
                                 </ul>
                             </div>
                             
-                            {/* Card 3: YouTube Videos */}
-                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#D1FAE5', animationDelay: '300ms'}}>
+                            {/* Card 4: YouTube Videos */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#D1FAE5', animationDelay: '400ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><Youtube className="w-6 h-6 mr-2"/> Video Guides</h3>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                   {apiResponse.youtubeVideos && apiResponse.youtubeVideos.length > 0 ? (
@@ -285,11 +293,17 @@ useEffect(() => {
                                 </div>
                             </div>
 
-                            {/* Card 4: Related Personality */}
-                            <div className="p-6 rounded-lg animate-card-in mb-25" style={{...sketchyBorderStyle, backgroundColor: '#FEF3C7', animationDelay: '400ms'}}>
+                            {/* Card 5: Related Personality */}
+                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FEF3C7', animationDelay: '500ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><User className="w-6 h-6 mr-2"/> You're in Good Company</h3>
                                 <h4 className="font-bold text-2xl text-gray-800">{apiResponse.relatedPersonality?.name}</h4>
                                 <p className="text-gray-700 mt-2 text-lg">{apiResponse.relatedPersonality?.story}</p>
+                            </div>
+
+                             {/* Card 6: Useless Life Hack */}
+                             <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FCE7F3', animationDelay: '600ms'}}>
+                                <h3 className="font-bold text-2xl mb-3 flex items-center"><Wand2 className="w-6 h-6 mr-2"/> A Useless Life Hack</h3>
+                                <p className="text-gray-700 text-lg">{apiResponse.uselessLifeHack}</p>
                             </div>
                         </div>
                     </>
