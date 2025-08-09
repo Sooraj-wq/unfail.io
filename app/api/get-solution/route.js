@@ -5,7 +5,7 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 // Initialize the Google AI client with your API key from environment variables
 const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY || '');
-const model = genAI.getGenerativeModel({ model: 'gemini-2.5-flash' });
+const model = genAI.getGenerativeModel({ model: 'gemini-1.5-pro-latest' });
 
 export async function POST(req) {
   try {
@@ -30,17 +30,6 @@ export async function POST(req) {
       - "relatedPersonality": (JSON object) An object with "name" and "story".
           - "name": (string) The name of a real, famous person who faced a similar type of struggle.
           - "story": (string) A brief, inspiring 2-3 sentence story of how they overcame that specific failure to achieve greatness.
-
-      Example Response Format:
-      {
-        "solution": "Feeling like a failed engineer is common because the field is incredibly demanding. However, your analytical skills are highly transferable. Consider roles in technical writing, where you document complex systems, or product management, where your engineering background helps you guide development teams effectively.",
-        "keyword": "technology",
-        "motivationalQuote": "Don't worry, they call it 'rapid unscheduled disassembly,' not 'failure.' It sounds much more professional.",
-        "relatedPersonality": {
-          "name": "James Dyson",
-          "story": "Before creating his revolutionary vacuum cleaner, James Dyson went through 5,126 failed prototypes. He saw each 'failure' not as a setback, but as a learning step that brought him closer to the final, successful design."
-        }
-      }
     `;
 
     // 3. Call the Gemini API
@@ -50,26 +39,24 @@ export async function POST(req) {
     // 4. Parse the structured JSON response from Gemini
     let geminiData;
     try {
-      // The model sometimes wraps the JSON in markdown backticks, so we clean it.
       const cleanedText = responseText.replace(/^```json\n|```$/g, '').trim();
       geminiData = JSON.parse(cleanedText);
     } catch (e) {
       console.error("Failed to parse Gemini JSON response:", responseText);
-      // If parsing fails, return an error
       throw new Error("The AI failed to provide a structured response. Please try again.");
     }
 
     const { keyword } = geminiData;
-
     let articles = [];
-    if (keyword) {
-      const fromDate = new Date();
-      fromDate.setDate(fromDate.getDate() - 28); 
-      const formattedDate = fromDate.toISOString().split('T')[0]; // YYYY-MM-DD
+    let youtubeVideos = [];
 
-      const newsApiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keyword)}&from=${formattedDate}&sortBy=publishedAt&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`;
-      
+    if (keyword) {
+      // 5. Call the News API with the extracted keyword
       try {
+        const fromDate = new Date();
+        fromDate.setDate(fromDate.getDate() - 28);
+        const formattedDate = fromDate.toISOString().split('T')[0];
+        const newsApiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keyword)}&from=${formattedDate}&sortBy=publishedAt&language=en&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`;
         const newsResponse = await fetch(newsApiUrl);
         if (newsResponse.ok) {
           const newsData = await newsResponse.json();
@@ -79,9 +66,28 @@ export async function POST(req) {
         console.error("News API fetch failed:", newsError);
         articles = [];
       }
+
+      // 6. NEW: Call the YouTube API with the same keyword
+      try {
+        const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(keyword)}&type=video&maxResults=3&relevanceLanguage=en&key=${process.env.YOUTUBE_API_KEY}`;
+        const youtubeResponse = await fetch(youtubeApiUrl);
+        if (youtubeResponse.ok) {
+          const youtubeData = await youtubeResponse.json();
+          // Map the response to a cleaner format
+          youtubeVideos = youtubeData.items.map(item => ({
+            id: item.id.videoId,
+            title: item.snippet.title,
+            thumbnail: item.snippet.thumbnails.default.url,
+          }));
+        }
+      } catch (youtubeError) {
+        console.error("YouTube API fetch failed:", youtubeError);
+        youtubeVideos = [];
+      }
     }
 
-    const finalResponse = { ...geminiData, articles };
+    // 7. Combine all data and send the final response
+    const finalResponse = { ...geminiData, articles, youtubeVideos };
     return NextResponse.json(finalResponse);
 
   } catch (error) {

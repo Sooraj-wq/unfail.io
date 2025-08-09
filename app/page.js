@@ -2,14 +2,21 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { User, Newspaper, Lightbulb } from 'lucide-react';
+import { User, Newspaper, Lightbulb, Youtube } from 'lucide-react';
 
 const initialSarcasticQuotes = [
   "The first step to failure is trying.",
   "It could be worse. You could also be on fire.",
   "Embrace the glorious mess that you are. And we do mean mess.",
   "If at first you don't succeed, maybe skydiving isn't for you.",
-  "The difference between genius and stupidity is that genius has its limits."
+  "The difference between genius and stupidity is that genius has its limits.",
+  "The light at the end of the tunnel has been turned off due to budget cuts.",
+  "If you think nobody cares if you’re alive, try missing a couple of payments.",
+  "Don't give up on your dreams. Keep sleeping.",
+  "An expert is a person who has made all the mistakes which can be made in a very narrow field.",
+  "If at first you don't succeed, destroy all evidence that you tried.",
+  "The road to success is dotted with many tempting parking spaces.",
+  "I'm not saying it was your fault, I'm just saying I'm blaming you."
 ];
 
 export default function HomePage() {
@@ -82,7 +89,6 @@ export default function HomePage() {
                     <>
                         <p className="text-center text-lg text-gray-600 italic">"{apiResponse.motivationalQuote}"</p>
                         
-                        {/* Cards are now in a single column flex layout */}
                         <div className="flex flex-col space-y-6">
                             {/* Card 1: The Solution */}
                             <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
@@ -108,8 +114,25 @@ export default function HomePage() {
                                   )}
                                 </ul>
                             </div>
+                            
+                            {/* NEW Card 3: YouTube Videos */}
+                            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                                <h3 className="font-bold text-lg mb-3 flex items-center"><Youtube className="w-5 h-5 mr-2 text-red-600"/> Video Guides</h3>
+                                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                  {apiResponse.youtubeVideos && apiResponse.youtubeVideos.length > 0 ? (
+                                    apiResponse.youtubeVideos.map((video) => (
+                                      <a key={video.id} href={`https://www.youtube.com/watch?v=${video.id}`} target="_blank" rel="noopener noreferrer" className="group">
+                                        <img src={video.thumbnail} alt={video.title} className="rounded-lg w-full mb-2 group-hover:opacity-80 transition-opacity" />
+                                        <p className="text-sm font-medium text-gray-700 group-hover:text-purple-600 line-clamp-2">{video.title}</p>
+                                      </a>
+                                    ))
+                                  ) : (
+                                    <p className="text-gray-500 sm:col-span-3">No relevant videos found.</p>
+                                  )}
+                                </div>
+                            </div>
 
-                            {/* Card 3: Related Personality */}
+                            {/* Card 4: Related Personality */}
                             <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                                 <h3 className="font-bold text-lg mb-3 flex items-center"><User className="w-5 h-5 mr-2 text-green-500"/> You're in Good Company</h3>
                                 <h4 className="font-semibold text-lg">{apiResponse.relatedPersonality?.name}</h4>
