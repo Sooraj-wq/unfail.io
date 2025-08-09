@@ -54,14 +54,14 @@ The project is built using **Next.js** with React for the frontend, providing a 
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](Add screenshot 1 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot1](/public/screenshot1.png)
+*This is the main home page.*
 
-![Screenshot2](Add screenshot 2 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot2](/public/screenshot2.png)
+*This image shows some part of the result obtained along with the prompt used to achieve it.*
 
-![Screenshot3](Add screenshot 3 here with proper name)
-*Add caption explaining what this shows*
+![Screenshot3](/public/screenshot3.png)
+*This image shows the next part of the result.*
 
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
@@ -76,9 +76,7 @@ For Software:
 [Add any extra demo materials/links]
 
 ## Team Contributions
-- [Name 1]: [Specific contributions]
-- [Name 2]: [Specific contributions]
-- [Name 3]: [Specific contributions]
+- Sooraj V: Worked on the full-stack app.
 
 ---
 Made with ❤️ at TinkerHub Useless Projects 
