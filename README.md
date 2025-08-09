@@ -5,20 +5,20 @@
 
 
 ## Basic Details
-### Team Name: SyntaxError
+### Team Name: Sooraj V
 
 
 ### Team Members
 - Team Lead: Sooraj V - College of Engineering Trivandrum
 
 ### Project Description
-Unfail.io is your sarcastically motivating life assistant that “unfails” your failures with witty prompts, motivational advice, and a dash of humor. Tell it what went sideways, and it’ll try (maybe) to help you get back on track — or at least make you smile.
+Unfail.io is a sarcastically motivating life assistant that “unfails” your failures with hilarious prompts, motivational advice, and a dash of humor. Tell it what is wrong in your life, even something as simple as 'I took engineering and now I am jobless' and see it put out interesting results. Malayalathil paranjal, oru tholvi il ninnum oru vijayam aayi maaran ulla oru vazhi paranju tharum pakshe ath paranju tharunna reethi ishtam aavanam enn illa.
 
 ### The Problem (that doesn't exist)
 Nobody asked for another motivational app that sugarcoats failure. I am here to solve the “problem” of being *too* serious about setbacks with sarcastic quotes, unhelpful tips, and uselessly useful advice.
 
 ### The Solution (that nobody asked for)
-We deliver a snarky, half-helpful companion that mocks your mistakes and serves inspiration with a side of sarcasm. Because life’s too short to take yourself seriously all the time.
+This webapp delivers a complete roadmap of how you can make your life a little less failure by offering advices, news articles, video guides, etc, all of which are delivered in a sarcastic and funny tone. Although the UI appears friendly, the results are not, and reading the solutions will give you useful advice but will make you feel more like a failure due to the nature of results.
 
 ## Technical Details
 ### Technologies/Components Used
@@ -26,7 +26,9 @@ For Software:
 - HTML, CSS, Javascript
 - Next.js, React, Tailwind, Node.js
 - Lucide-react icons for UI
-- Fetch API for communication
+- Gemini API
+- newsapi.org API
+- Youtube API
 
 ### Implementation
 For Software:
@@ -35,7 +37,7 @@ The project is built using **Next.js** with React for the frontend, providing a 
 
 - The splash screen is shown initially with a fade-out animation before revealing the main interface.
 - Once the splash fades, a random sarcastic quote is displayed alongside an input field where users can describe what went wrong.
-- On submission, the input is sent to a backend API route (`/api/get-solution`), which processes the request (mock or real logic) and returns a motivational quote, suggested solutions, related news articles, YouTube video guides, and personality stories.
+- On submission, the input is sent to a backend API route (`/api/get-solution`), which processes the request (mock or real logic) and returns a funny and sarcastic motivational quote, suggested solutions, related news articles, YouTube video guides, and personality stories, all meant to motivate and demotivate the user simultaneously.
 - The frontend then animates the display of the response with sections styled using a custom sketchy border effect.
 - Additional UI features include smooth transitions, loading states, and error handling to maintain a polished user experience.
 - Iconography is handled by the Lucide-react library to complement the sarcastic, playful tone.
@@ -51,7 +53,7 @@ The project is built using **Next.js** with React for the frontend, providing a 
 `npm run dev`
 
 ### Project Documentation
-For Software:
+For Software: [Watch the video](/public/recording.mp4)
 
 # Screenshots (Add at least 3)
 ![Screenshot1](/public/screenshot1.png) <br>
