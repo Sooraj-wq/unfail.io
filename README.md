@@ -1,39 +1,32 @@
 <img width="3188" height="1202" alt="frame (3)" src="https://github.com/user-attachments/assets/517ad8e9-ad22-457d-9538-a9e62d137cd7" />
 
 
-# [Project Name] 🎯
+# Unfail.io 🎯
 
 
 ## Basic Details
-### Team Name: [Name]
+### Team Name: SyntaxError
 
 
 ### Team Members
-- Team Lead: [Name] - [College]
-- Member 2: [Name] - [College]
-- Member 3: [Name] - [College]
+- Team Lead: Sooraj V - College of Engineering Trivandrum
 
 ### Project Description
-[2-3 lines about what your project does]
+Unfail.io is your sarcastically motivating life assistant that “unfails” your failures with witty prompts, motivational advice, and a dash of humor. Tell it what went sideways, and it’ll try (maybe) to help you get back on track — or at least make you smile.
 
 ### The Problem (that doesn't exist)
-[What ridiculous problem are you solving?]
+Nobody asked for another motivational app that sugarcoats failure. I am here to solve the “problem” of being *too* serious about setbacks with sarcastic quotes, unhelpful tips, and uselessly useful advice.
 
 ### The Solution (that nobody asked for)
-[How are you solving it? Keep it fun!]
+We deliver a snarky, half-helpful companion that mocks your mistakes and serves inspiration with a side of sarcasm. Because life’s too short to take yourself seriously all the time.
 
 ## Technical Details
 ### Technologies/Components Used
 For Software:
-- [Languages used]
-- [Frameworks used]
-- [Libraries used]
-- [Tools used]
-
-For Hardware:
-- [List main components]
-- [List specifications]
-- [List tools required]
+- HTML, CSS, Javascript
+- Next.js, React, Tailwind, Node.js
+- Lucide-react icons for UI flair
+- Fetch API for communication
 
 ### Implementation
 For Software:
