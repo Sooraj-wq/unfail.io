@@ -54,13 +54,13 @@ The project is built using **Next.js** with React for the frontend, providing a 
 For Software:
 
 # Screenshots (Add at least 3)
-![Screenshot1](/public/screenshot1.png)
+![Screenshot1](/public/screenshot1.png) <br>
 *This is the main home page.*
 
-![Screenshot2](/public/screenshot2.png)
+![Screenshot2](/public/screenshot2.png) <br>
 *This image shows some part of the result obtained along with the prompt used to achieve it.*
 
-![Screenshot3](/public/screenshot3.png)
+![Screenshot3](/public/screenshot3.png) <br>
 *This image shows the next part of the result.*
 
 ## Team Contributions
