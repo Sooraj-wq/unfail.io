@@ -19,6 +19,8 @@ Nobody asked for another motivational app that sugarcoats failure. I am here to 
 
 ### The Solution (that nobody asked for)
 This webapp delivers a complete roadmap of how you can make your life a little less failure by offering advices, news articles, video guides, etc, all of which are delivered in a sarcastic and funny tone. Although the UI appears friendly, the results are not, and reading the solutions will give you useful advice but will make you feel more like a failure due to the nature of results.
+<br>
+The news articles and youtube results are hyperlinks and lead to actual news webpages on click.
 
 ## Technical Details
 ### Technologies/Components Used
