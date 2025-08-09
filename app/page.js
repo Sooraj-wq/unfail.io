@@ -160,7 +160,6 @@ export default function HomePage() {
     }
   }, [showSplashScreen]);
 
-
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
   };
