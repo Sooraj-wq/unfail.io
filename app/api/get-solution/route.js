@@ -16,15 +16,16 @@ export async function POST(req) {
       return NextResponse.json({ error: 'User input is required' }, { status: 400 });
     }
 
-    // 2. Craft the detailed prompt for the Gemini API
+    // 2. Craft the new, more sarcastic prompt for the Gemini API
     const prompt = `
       You are a brutally honest and sarcastic life coach for a web app named "unfail.io". You've seen it all and you're not impressed. Your goal is to give advice that is genuinely useful but wrapped in a layer of dry, dark humor. You motivate by demotivating.
       The user's situation is: "${userInput}"
 
-      Please provide your complete response in a single, valid JSON object. The object MUST contain the following keys: "solution", "keyword", "motivationalQuote", and "relatedPersonality".
+      Please provide your complete response in a single, valid JSON object. The object MUST contain the following keys: "solution", "keyword", "youtubeKeyword", "motivationalQuote", and "relatedPersonality".
 
       - "solution": (string) Start by lightly roasting the user's situation, then provide a genuinely constructive and actionable alternative path. The useful advice should be clear despite the sarcastic tone.
-      - "keyword": (string) The single most relevant keyword from the actual useful part of your solution (e.g., "programming", "marketing", "entrepreneurship").
+      - "keyword": (string) A 2-3 word search phrase suitable for finding relevant news articles about the industry or topic in the solution (e.g., "software development trends", "small business marketing", "healthcare careers").
+      - "youtubeKeyword": (string) A practical, tutorial-focused search query for YouTube based on the solution. It should be phrased like a 'how-to' search (e.g., "getting started with software testing", "learn digital marketing basics").
       - "motivationalQuote": (string) A sarcastically motivational or darkly humorous quote that fits the user's situation. It should sound like something you'd say to snap someone out of a pity party.
       - "relatedPersonality": (JSON object) An object with "name" and "story".
           - "name": (string) The name of a real, famous person who faced a similar type of struggle.
@@ -33,7 +34,8 @@ export async function POST(req) {
       Example for a user who failed as an engineer:
       {
         "solution": "Ah, so you've discovered your talent for 'unscheduled structural disassembly.' A rare gift. Look, since building things isn't your forte, how about a career in breaking them on purpose? Quality assurance and software testing are fields where your knack for finding out exactly how things can go wrong is actually a marketable skill.",
-        "keyword": "testing",
+        "keyword": "software testing industry",
+        "youtubeKeyword": "how to get a job in quality assurance",
         "motivationalQuote": "Congratulations, you've found one of the thousands of ways that won't work. Only a few million more to go.",
         "relatedPersonality": {
           "name": "Colonel Sanders",
@@ -56,12 +58,13 @@ export async function POST(req) {
       throw new Error("The AI failed to provide a structured response. Please try again.");
     }
 
-    const { keyword } = geminiData;
+    const { keyword, youtubeKeyword } = geminiData;
     let articles = [];
     let youtubeVideos = [];
 
+    // Use the 'keyword' for news and 'youtubeKeyword' for videos
     if (keyword) {
-      // 5. Call the News API with the extracted keyword
+      // 5. Call the News API with the general keyword
       try {
         const fromDate = new Date();
         fromDate.setDate(fromDate.getDate() - 28);
@@ -76,25 +79,35 @@ export async function POST(req) {
         console.error("News API fetch failed:", newsError);
         articles = [];
       }
-
-      // 6. NEW: Call the YouTube API with the same keyword
-      try {
-        const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(keyword)}&type=video&maxResults=3&relevanceLanguage=en&key=${process.env.YOUTUBE_API_KEY}`;
-        const youtubeResponse = await fetch(youtubeApiUrl);
-        if (youtubeResponse.ok) {
-          const youtubeData = await youtubeResponse.json();
-          // Map the response to a cleaner format
-          youtubeVideos = youtubeData.items.map(item => ({
-            id: item.id.videoId,
-            title: item.snippet.title,
-            thumbnail: item.snippet.thumbnails.default.url,
-          }));
-        }
-      } catch (youtubeError) {
-        console.error("YouTube API fetch failed:", youtubeError);
-        youtubeVideos = [];
-      }
     }
+
+    if (youtubeKeyword) {
+        // 6. Call the YouTube API with the specific tutorial keyword
+        try {
+            const youtubeApiUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${encodeURIComponent(youtubeKeyword)}&type=video&maxResults=3&relevanceLanguage=en&key=${process.env.YOUTUBE_API_KEY}`;
+            const youtubeResponse = await fetch(youtubeApiUrl);
+            const youtubeData = await youtubeResponse.json();
+
+            // --- ADDED FOR DEBUGGING ---
+            // This will print the full YouTube API response to your terminal console
+            console.log("--- YouTube API Response ---");
+            console.log(JSON.stringify(youtubeData, null, 2));
+            console.log("--------------------------");
+            
+            // Check if 'items' exists and has content before mapping
+            if (youtubeData && youtubeData.items && youtubeData.items.length > 0) {
+              youtubeVideos = youtubeData.items.map(item => ({
+                  id: item.id.videoId,
+                  title: item.snippet.title,
+                  thumbnail: item.snippet.thumbnails.default.url,
+              }));
+            }
+        } catch (youtubeError) {
+            console.error("YouTube API fetch failed:", youtubeError);
+            youtubeVideos = [];
+        }
+    }
+
 
     // 7. Combine all data and send the final response
     const finalResponse = { ...geminiData, articles, youtubeVideos };

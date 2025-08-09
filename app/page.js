@@ -286,7 +286,7 @@ useEffect(() => {
                             </div>
 
                             {/* Card 4: Related Personality */}
-                            <div className="p-6 rounded-lg animate-card-in" style={{...sketchyBorderStyle, backgroundColor: '#FEF3C7', animationDelay: '400ms'}}>
+                            <div className="p-6 rounded-lg animate-card-in mb-25" style={{...sketchyBorderStyle, backgroundColor: '#FEF3C7', animationDelay: '400ms'}}>
                                 <h3 className="font-bold text-2xl mb-3 flex items-center"><User className="w-6 h-6 mr-2"/> You're in Good Company</h3>
                                 <h4 className="font-bold text-2xl text-gray-800">{apiResponse.relatedPersonality?.name}</h4>
                                 <p className="text-gray-700 mt-2 text-lg">{apiResponse.relatedPersonality?.story}</p>
