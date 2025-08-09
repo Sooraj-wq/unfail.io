@@ -1,19 +1,24 @@
 // File: app/layout.jsx
 
-import { Inter } from "next/font/google";
+import { Patrick_Hand } from "next/font/google"; // Step 2
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+// Step 3
+const patrickHand = Patrick_Hand({
+  subsets: ["latin"],
+  weight: "400",
+});
 
 export const metadata = {
-  title: "HalfDecent",
+  title: "Unfail.io",
   description: "Slightly helpful advice for when things go sideways.",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} bg-gray-50 text-gray-800`}>
+      {/* Step 4: Apply the className here */}
+      <body className={`${patrickHand.className} bg-[#FDFCF8] text-gray-800`}>
         {children}
       </body>
     </html>
