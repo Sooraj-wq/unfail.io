@@ -63,18 +63,6 @@ For Software:
 ![Screenshot3](/public/screenshot3.png)
 *This image shows the next part of the result.*
 
-# Diagrams
-![Workflow](Add your workflow/architecture diagram here)
-*Add caption explaining your workflow*
-
-### Project Demo
-# Video
-[Add your demo video link here]
-*Explain what the video demonstrates*
-
-# Additional Demos
-[Add any extra demo materials/links]
-
 ## Team Contributions
 - Sooraj V: Worked on the full-stack app.
 
