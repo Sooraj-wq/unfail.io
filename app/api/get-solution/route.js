@@ -73,7 +73,7 @@ export async function POST(req) {
         const fromDate = new Date();
         fromDate.setDate(fromDate.getDate() - 28);
         const formattedDate = fromDate.toISOString().split('T')[0];
-        const newsApiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keyword)}&from=${formattedDate}&sortBy=publishedAt&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`;
+        const newsApiUrl = `https://newsapi.org/v2/everything?q=${encodeURIComponent(keyword)}&from=${formattedDate}&sortBy=publishedAt&language=en&pageSize=5&apiKey=${process.env.NEWS_API_KEY}`;
         const newsResponse = await fetch(newsApiUrl);
         if (newsResponse.ok) {
           const newsData = await newsResponse.json();
