@@ -25,16 +25,30 @@ We deliver a snarky, half-helpful companion that mocks your mistakes and serves 
 For Software:
 - HTML, CSS, Javascript
 - Next.js, React, Tailwind, Node.js
-- Lucide-react icons for UI flair
+- Lucide-react icons for UI
 - Fetch API for communication
 
 ### Implementation
 For Software:
+
+The project is built using **Next.js** with React for the frontend, providing a fast, server-side rendered experience. Tailwind CSS powers the stylish and responsive UI, making the sarcastic vibe visually appealing and easy to navigate.
+
+- The splash screen is shown initially with a fade-out animation before revealing the main interface.
+- Once the splash fades, a random sarcastic quote is displayed alongside an input field where users can describe what went wrong.
+- On submission, the input is sent to a backend API route (`/api/get-solution`), which processes the request (mock or real logic) and returns a motivational quote, suggested solutions, related news articles, YouTube video guides, and personality stories.
+- The frontend then animates the display of the response with sections styled using a custom sketchy border effect.
+- Additional UI features include smooth transitions, loading states, and error handling to maintain a polished user experience.
+- Iconography is handled by the Lucide-react library to complement the sarcastic, playful tone.
+- 
 # Installation
-[commands]
+1. Clone the repository: `git clone https://github.com/your-username/unfail.io.git`
+2. Navigate to the project folder:  `cd unfail.io`
+3. Install dependencies: `npm install`
+4. Create a .env.local file in the root folder and add your API keys or configs according to .env.example file
+
 
 # Run
-[commands]
+`npm run dev`
 
 ### Project Documentation
 For Software:
@@ -52,25 +66,6 @@ For Software:
 # Diagrams
 ![Workflow](Add your workflow/architecture diagram here)
 *Add caption explaining your workflow*
-
-For Hardware:
-
-# Schematic & Circuit
-![Circuit](Add your circuit diagram here)
-*Add caption explaining connections*
-
-![Schematic](Add your schematic diagram here)
-*Add caption explaining the schematic*
-
-# Build Photos
-![Components](Add photo of your components here)
-*List out all components shown*
-
-![Build](Add photos of build process here)
-*Explain the build steps*
-
-![Final](Add photo of final product here)
-*Explain the final build*
 
 ### Project Demo
 # Video
