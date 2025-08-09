@@ -19,52 +19,113 @@ const initialSarcasticQuotes = [
   "I'm not saying it was your fault, I'm just saying I'm blaming you."
 ];
 
-// A small component for the background doodles
-// A playful + HUD-like doodle background
+// DoodleBackground.jsx
+const HUD_COLOR = "#c6c1b9"; // slightly darker than background
+
 const DoodleBackground = () => (
-  <div className="absolute top-0 left-0 w-full h-full -z-10 overflow-hidden pointer-events-none">
-    {/* Existing doodles */}
-    <svg className="absolute top-20 left-10 sm:left-40 w-48 h-24 text-gray-200 opacity-50" viewBox="0 0 120 70">
-      <path d="M 50 100 C 20 100, 20 70, 50 70 C 50 50, 80 50, 80 70 C 110 70, 110 100, 80 100 Z" fill="none" stroke="currentColor" strokeWidth="2" transform="scale(1, 0.6)" />
-    </svg>
-
-    {/* HUD-style circles */}
-    <svg className="absolute top-10 right-16 w-32 h-32 text-purple-200 opacity-30" viewBox="0 0 200 200">
-      <circle cx="100" cy="100" r="80" fill="none" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" />
-      <circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" strokeWidth="0.5" strokeDasharray="2 6" />
-    </svg>
-
-    {/* Radar sweep arc */}
-    <svg className="absolute bottom-10 left-8 w-48 h-48 text-green-300 opacity-20" viewBox="0 0 200 200">
-      <path d="M100 100 L180 100 A80 80 0 0 0 100 20 Z" fill="currentColor" />
-    </svg>
-
-    {/* Grid lines */}
-    <svg className="absolute bottom-0 right-0 w-64 h-64 text-gray-300 opacity-10" viewBox="0 0 100 100">
-      {Array.from({ length: 11 }).map((_, i) => (
-        <line key={`v${i}`} x1={i * 10} y1="0" x2={i * 10} y2="100" stroke="currentColor" strokeWidth="0.5" />
+  <div className="absolute top-0 left-0 w-full h-full z-0 overflow-hidden pointer-events-none">
+    {/* Base grid pattern (always visible) */}
+    <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+      {Array.from({ length: 50 }).map((_, i) => (
+        <line
+          key={`v-${i}`}
+          x1={i * 40}
+          y1="0"
+          x2={i * 40}
+          y2="10000"
+          stroke={HUD_COLOR}
+          strokeWidth="0.5"
+          opacity="0.25"
+        />
       ))}
-      {Array.from({ length: 11 }).map((_, i) => (
-        <line key={`h${i}`} x1="0" y1={i * 10} x2="100" y2={i * 10} stroke="currentColor" strokeWidth="0.5" />
+      {Array.from({ length: 50 }).map((_, i) => (
+        <line
+          key={`h-${i}`}
+          x1="0"
+          y1={i * 40}
+          x2="10000"
+          y2={i * 40}
+          stroke={HUD_COLOR}
+          strokeWidth="0.5"
+          opacity="0.25"
+        />
       ))}
     </svg>
 
-    {/* Fake debug text */}
-    <div className="absolute top-5 left-1/2 text-[10px] font-mono text-gray-400 opacity-40 tracking-wider">
-      SYS_LOG: 42% optimism buffer... recalculating.
-    </div>
-    <div className="absolute bottom-5 left-5 text-[10px] font-mono text-gray-400 opacity-40 tracking-wider">
-      STATUS: UNFAIL PROTOCOL ACTIVE
+    {/* Always visible: Main circle + rectangle */}
+    <svg className="absolute top-20 left-10 w-72 h-72" viewBox="0 0 200 200">
+      <circle cx="100" cy="100" r="90" fill="none" stroke={HUD_COLOR} strokeWidth="1" strokeDasharray="4 4" opacity="0.4" />
+      <circle cx="100" cy="100" r="60" fill="none" stroke={HUD_COLOR} strokeWidth="0.8" strokeDasharray="2 6" opacity="0.4" />
+      <rect x="60" y="60" width="80" height="80" fill="none" stroke={HUD_COLOR} strokeWidth="1" opacity="0.4" />
+    </svg>
+
+    {/* Desktop-only extra elements */}
+    <div className="hidden md:block">
+      {/* Crosshair target */}
+      <svg className="absolute top-1/4 right-16 w-56 h-56" viewBox="0 0 200 200">
+        <circle cx="100" cy="100" r="80" fill="none" stroke={HUD_COLOR} strokeWidth="1" opacity="0.35" />
+        <circle cx="100" cy="100" r="40" fill="none" stroke={HUD_COLOR} strokeWidth="1" opacity="0.35" />
+        <line x1="100" y1="0" x2="100" y2="200" stroke={HUD_COLOR} strokeWidth="0.5" opacity="0.3" />
+        <line x1="0" y1="100" x2="200" y2="100" stroke={HUD_COLOR} strokeWidth="0.5" opacity="0.3" />
+      </svg>
+
+      {/* Broken arc rings */}
+      <svg className="absolute bottom-24 left-1/4 w-72 h-72" viewBox="0 0 200 200">
+        <path d="M20,100 A80,80 0 0,1 180,100" stroke={HUD_COLOR} strokeWidth="2" fill="none" opacity="0.3" />
+        <path d="M40,100 A60,60 0 0,1 160,100" stroke={HUD_COLOR} strokeWidth="1" fill="none" strokeDasharray="6 8" opacity="0.3" />
+      </svg>
+
+      {/* Stacked angled lines */}
+      <svg className="absolute top-1/3 left-1/3 w-64 h-64" viewBox="0 0 200 200">
+        <line x1="20" y1="200" x2="200" y2="20" stroke={HUD_COLOR} strokeWidth="1" opacity="0.3" />
+        <line x1="0" y1="180" x2="180" y2="0" stroke={HUD_COLOR} strokeWidth="1" opacity="0.2" />
+        <line x1="40" y1="200" x2="200" y2="40" stroke={HUD_COLOR} strokeWidth="0.5" strokeDasharray="4 6" opacity="0.25" />
+      </svg>
+
+      {/* Concentric small circles */}
+      <svg className="absolute bottom-10 right-1/3 w-48 h-48" viewBox="0 0 200 200">
+        {[...Array(5)].map((_, i) => (
+          <circle
+            key={i}
+            cx="100"
+            cy="100"
+            r={20 + i * 15}
+            fill="none"
+            stroke={HUD_COLOR}
+            strokeWidth="0.5"
+            opacity="0.3"
+          />
+        ))}
+      </svg>
+
+      {/* Rectangle frame with offset lines */}
+      <svg className="absolute top-10 right-1/2 w-52 h-52" viewBox="0 0 200 200">
+        <rect x="20" y="20" width="160" height="160" fill="none" stroke={HUD_COLOR} strokeWidth="1" opacity="0.35" />
+        <line x1="20" y1="50" x2="180" y2="50" stroke={HUD_COLOR} strokeWidth="0.5" opacity="0.3" />
+        <line x1="20" y1="150" x2="180" y2="150" stroke={HUD_COLOR} strokeWidth="0.5" opacity="0.3" />
+      </svg>
     </div>
   </div>
 );
 
 
+// Splash Screen Component
+const SplashScreen = ({ isFadingOut }) => (
+  <div className={`flex justify-center items-center h-screen bg-[#FDFCF8] transition-opacity duration-500 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
+    <div className="text-center">
+      <h1 className="text-6xl font-bold text-gray-800">Unfail.io</h1>
+      <p className="text-xl text-gray-600 italic mt-4">unfailing your life, one prompt at a time</p>
+    </div>
+  </div>
+);
+
 
 export default function HomePage() {
+  const [showSplashScreen, setShowSplashScreen] = useState(true);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const [isInitialState, setIsInitialState] = useState(true);
   const [randomQuote, setRandomQuote] = useState('');
-  const [startAnimation, setStartAnimation] = useState(false); // State to control animation timing
+  const [startAnimation, setStartAnimation] = useState(false);
 
   const [userInput, setUserInput] = useState('');
   const [apiResponse, setApiResponse] = useState(null);
@@ -72,14 +133,35 @@ export default function HomePage() {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    setRandomQuote(initialSarcasticQuotes[Math.floor(Math.random() * initialSarcasticQuotes.length)]);
-    
-    const timer = setTimeout(() => {
-      setStartAnimation(true);
-    }, 100); 
+    // Timer to start the fade-out process
+    const fadeOutTimer = setTimeout(() => {
+      setIsFadingOut(true);
+    }, 2000); // Start fading out after 2 seconds
 
-    return () => clearTimeout(timer); 
+    // Timer to hide the splash screen component completely after fade out
+    const hideTimer = setTimeout(() => {
+      setShowSplashScreen(false);
+    }, 2500); // Remove from DOM after 2.5 seconds (2000ms + 500ms fade)
+
+    return () => {
+      clearTimeout(fadeOutTimer);
+      clearTimeout(hideTimer);
+    };
   }, []);
+
+  useEffect(() => {
+    // This effect runs once the splash screen is hidden
+    if (!showSplashScreen) {
+      setRandomQuote(initialSarcasticQuotes[Math.floor(Math.random() * initialSarcasticQuotes.length)]);
+      
+      const animationTimer = setTimeout(() => {
+        setStartAnimation(true);
+      }, 100);
+
+      return () => clearTimeout(animationTimer);
+    }
+  }, [showSplashScreen]);
+
 
   const handleInputChange = (e) => {
     setUserInput(e.target.value);
@@ -122,6 +204,10 @@ export default function HomePage() {
     boxShadow: 'rgba(0, 0, 0, 0.1) 4px 4px 0 0',
   };
 
+  if (showSplashScreen) {
+    return <SplashScreen isFadingOut={isFadingOut} />;
+  }
+
   return (
     <div className="relative flex flex-col min-h-screen p-4 md:p-6 bg-[#FDFCF8] text-gray-800 overflow-hidden">
       <DoodleBackground />
@@ -131,35 +217,27 @@ export default function HomePage() {
         </h1>
       </header>
 
-      <main className={`flex-grow flex flex-col w-full max-w-3xl mx-auto overflow-y-auto pt-4 transition-all duration-700 ease-in-out ${isInitialState ? 'justify-center' : 'justify-start'}`}>
-{isInitialState && (
-  <div className={`text-center space-y-8 ${startAnimation ? 'animate-fade-in-up' : 'opacity-0'}`}>
-    <p className="text-gray-600 text-3xl italic animate-fade-in-up">
-      "{randomQuote}"
-    </p>
-    <form
-      onSubmit={handleSubmit}
-      className="w-full relative mt-4 animate-slide-down"
-    >
-      <input
-        type="text"
-        value={userInput}
-        onChange={handleInputChange}
-        placeholder="Tell me what went sideways..."
-        className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all duration-700 ease-in-out"
-        style={{ ...sketchyBorderStyle, border: '3px solid #1f2937' }}
-      />
-      <button
-        type="submit"
-        className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors"
-      >
-        <Search className="w-6 h-6" />
-      </button>
-    </form>
-  </div>
-)}
-
-
+      <main className={`flex-grow flex flex-col w-full max-w-3xl mx-auto overflow-y-auto pt-4 transition-all duration-1500 ease-in-out ${isInitialState ? 'justify-center' : 'justify-start'}`}>
+        {isInitialState && (
+            <div className={`text-center space-y-8 ${startAnimation ? 'animate-fade-in' : 'opacity-0'}`}>
+                <p className="text-gray-600 text-3xl italic">
+                  "{randomQuote}"
+                </p>
+                <form onSubmit={handleSubmit} className="w-full relative mt-4">
+                  <input
+                    type="text"
+                    value={userInput}
+                    onChange={handleInputChange}
+                    placeholder="Tell me what went sideways..."
+                    className="w-full bg-white rounded-full py-4 pl-6 pr-14 text-lg text-gray-800 focus:outline-none focus:ring-2 focus:ring-purple-400"
+                    style={{...sketchyBorderStyle, border: '3px solid #1f2937'}}
+                  />
+                  <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2 p-2 text-gray-500 hover:text-purple-600 rounded-full transition-colors">
+                    <Search className="w-6 h-6" />
+                  </button>
+                </form>
+            </div>
+        )}
 
         {!isInitialState && (
             <div className="w-full space-y-8 animate-fade-in">
