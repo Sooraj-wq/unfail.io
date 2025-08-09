@@ -42,7 +42,6 @@ The project is built using **Next.js** with React for the frontend, providing a 
 - The frontend then animates the display of the response with sections styled using a custom sketchy border effect.
 - Additional UI features include smooth transitions, loading states, and error handling to maintain a polished user experience.
 - Iconography is handled by the Lucide-react library to complement the sarcastic, playful tone.
-- 
 # Installation
 1. Clone the repository: `git clone https://github.com/your-username/unfail.io.git`
 2. Navigate to the project folder:  `cd unfail.io`
