@@ -54,7 +54,7 @@ The project is built using **Next.js** with React for the frontend, providing a 
 `npm run dev`
 
 ### Project Documentation
-For Software: [Watch the video](/public/recording.mp4)
+For Software: [Watch the video](/public/main_recording.mp4)
 
 # Screenshots (Add at least 3)
 ![Screenshot1](/public/screenshot1.png) <br>
