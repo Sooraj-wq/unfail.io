@@ -2,7 +2,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { User, Music, Newspaper, Lightbulb } from 'lucide-react';
+import { User, Newspaper, Lightbulb } from 'lucide-react';
 
 const initialSarcasticQuotes = [
   "The first step to failure is trying.",
@@ -60,14 +60,14 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen p-4 md:p-6">
+    <div className="flex flex-col min-h-screen p-4 md:p-6 bg-gray-50 text-gray-800">
       <header className="w-full max-w-5xl mx-auto">
         <h1 className="text-2xl font-bold bg-gradient-to-r from-black via-purple-500 to-black text-transparent bg-clip-text">
             Unfail.io
         </h1>
       </header>
 
-      <main className="flex-grow flex flex-col justify-center items-center w-full max-w-5xl mx-auto overflow-y-auto pt-4">
+      <main className="flex-grow flex flex-col justify-center items-center w-full max-w-3xl mx-auto overflow-y-auto pt-4">
         {isInitialState && (
             <div className="text-center text-gray-500 animate-fade-in">
                 {randomQuote}
@@ -81,31 +81,39 @@ export default function HomePage() {
                 {apiResponse && (
                     <>
                         <p className="text-center text-lg text-gray-600 italic">"{apiResponse.motivationalQuote}"</p>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        
+                        {/* Cards are now in a single column flex layout */}
+                        <div className="flex flex-col space-y-6">
                             {/* Card 1: The Solution */}
                             <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                                 <h3 className="font-bold text-lg mb-3 flex items-center"><Lightbulb className="w-5 h-5 mr-2 text-yellow-500"/> Your Suggested Path</h3>
                                 <p className="text-gray-700 whitespace-pre-wrap">{apiResponse.solution}</p>
                             </div>
-                            {/* Card 2: Related Personality */}
+
+                            {/* Card 2: News */}
+                            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
+                                <h3 className="font-bold text-lg mb-3 flex items-center"><Newspaper className="w-5 h-5 mr-2 text-cyan-500"/> Latest Opportunities</h3>
+                                <ul className="space-y-3">
+                                  {apiResponse.articles && apiResponse.articles.length > 0 ? (
+                                    apiResponse.articles.map((article, i) => (
+                                      <li key={i}>
+                                        <a href={article.url} target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 hover:underline">
+                                          {article.title}
+                                        </a>
+                                        <p className="text-sm text-gray-500">{new URL(article.url).hostname}</p>
+                                      </li>
+                                    ))
+                                  ) : (
+                                    <p className="text-gray-500">No recent news found for this topic.</p>
+                                  )}
+                                </ul>
+                            </div>
+
+                            {/* Card 3: Related Personality */}
                             <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
                                 <h3 className="font-bold text-lg mb-3 flex items-center"><User className="w-5 h-5 mr-2 text-green-500"/> You're in Good Company</h3>
                                 <h4 className="font-semibold text-lg">{apiResponse.relatedPersonality?.name}</h4>
                                 <p className="text-gray-500 mt-2">{apiResponse.relatedPersonality?.story}</p>
-                            </div>
-                            {/* Card 3: Soundtrack */}
-                            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                                <h3 className="font-bold text-lg mb-3 flex items-center"><Music className="w-5 h-5 mr-2 text-pink-500"/> Your Bounce-Back Soundtrack</h3>
-                                <ul className="space-y-2">
-                                    {apiResponse.songSuggestions?.map((song, i) => <li key={i}>{song.title} - <span className="text-gray-500">{song.artist}</span></li>)}
-                                </ul>
-                            </div>
-                            {/* Card 4: News */}
-                            <div className="bg-white p-6 rounded-lg border border-gray-200 shadow-sm">
-                                <h3 className="font-bold text-lg mb-3 flex items-center"><Newspaper className="w-5 h-5 mr-2 text-cyan-500"/> Latest Opportunities</h3>
-                                <ul className="space-y-2">
-                                    {apiResponse.articles?.map((article, i) => <li key={i}><a href={article.url} target="_blank" rel="noopener noreferrer" className="hover:underline text-blue-600">{article.title}</a></li>)}
-                                </ul>
                             </div>
                         </div>
                     </>
